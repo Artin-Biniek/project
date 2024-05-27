@@ -16,13 +16,22 @@ json_string= '''
 
 '''
 
-dict={
+parent_attributes=["@context"]
+#Concerned about child attributes
+dict2={
     "@context":["@id","@type"]
     
     
     
     }
-parent_attributes=["@context"]
+#Concerned about values of child attributes or of parent attributes
+dict3={
+
+
+}
+
+
+
 X="tempString"
 
 #1)Automatically identify the parent_attributes for a given JSON
@@ -39,28 +48,28 @@ for attribute in data:
 
 #2)Automatically identify the child attributes
 
+
 #Obtain the child attributes
-child_attributes=data.get(X,{})
+child_attributes=data.get(X)
+valid_attributes=dict2[X]
+print(child_attributes)
 
-#Obtain the valid attributes for the given attribute
-valid_attributes=dict[X]
-
-
-#Iterate over the valid child attributes    
-for key in child_attributes:
-    for child in valid_attributes:
-        if(child==key):
-            #If valid we dont need to check this attribute anymore
-            valid_attributes.pop(0)
-            print(key)
-            print(child)
-            break
-        else:
-            print(key)
-            print(child)
-            print("Invalid JSON")
-            exit()
-
+#If child attributes do exist do the following 
+if isinstance(child_attributes, dict):
+    #Iterate over the valid child attributes    
+    for key in child_attributes:
+        for child in valid_attributes:
+            if(child==key):
+                #If valid we dont need to check this attribute anymore
+                valid_attributes.pop(0)
+                print(key)
+                print(child)
+                break
+            else:
+                print(key)
+                print(child)
+                print("Invalid JSON")
+                exit()
 
 #Next we check all domains
 
