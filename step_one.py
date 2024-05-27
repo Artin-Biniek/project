@@ -11,6 +11,7 @@ json_string= '''
     "@context":{
         "@id":"https://www.w3.org/ns/credentials/v2",
         "@type": "https://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+    
     }
 }
 
@@ -51,26 +52,18 @@ for attribute in data:
 
 #Obtain the child attributes
 child_attributes=data.get(X)
-valid_attributes=dict2[X]
 print(child_attributes)
 
-#If child attributes do exist do the following 
+print(dict2[X])
 if isinstance(child_attributes, dict):
-    #Iterate over the valid child attributes    
     for key in child_attributes:
-        for child in valid_attributes:
-            if(child==key):
-                #If valid we dont need to check this attribute anymore
-                valid_attributes.pop(0)
-                print(key)
-                print(child)
-                break
-            else:
-                print(key)
-                print(child)
-                print("Invalid JSON")
-                exit()
+        if(key in dict2[X]):
+            print("True")
+        else:
+            print("Invalid Json")
+            exit()
 
+print("It passed")
 #Next we check all domains
 
 #To check for valid values see if it matches the conditions for a value
