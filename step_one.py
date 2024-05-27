@@ -4,67 +4,58 @@ import json
 
 
 """
+"""
+
+1)Pass in JSON
+2)Iterate over elements of JSON
+3)Check if elements belong to one of the valid attributes and check if its a dictionary
+4)If dictionary pass it once again as the new JSON
+5)Keep going until you find that its no longer a dictionary value
+6)It will automatically stop at that value and continue on with the next elem in the list when
+those child elements are done it will move to the next parent elements and so on.
+"""
+#Checking valid attributes
+def test(X):
+    for elem in X:
+        if elem in attributes and isinstance(X[elem],dict):
+            print(elem)
+            #Obtaining child attributes
+            print(X[elem])
+            test(X[elem])
+        elif elem in attributes and not isinstance(X[elem],dict):
+            print(elem)
+            print(X[elem])
+        else:
+            print("invalid")
+            exit()
+
+
+
+#Domain checking
+
 
 #Example
 json_string= '''
 {
     "@context":{
-        "@id":"https://www.w3.org/ns/credentials/v2",
-        "@type": "https://www.w3.org/2001/XMLSchema#nonNegativeInteger"
-    
+        "@id":{
+            "@id":"temp",
+            "@id2":{
+                "@id2":"temp2"
+            }
+        },
+
+        "@id2":{
+            "@id":"temp3",
+            "@id2":"temp4"
+        }
     }
 }
 
 '''
 
-parent_attributes=["@context"]
-#Concerned about child attributes
-dict2={
-    "@context":["@id","@type"]
-    
-    
-    
-    }
-#Concerned about values of child attributes or of parent attributes
-dict3={
+attributes=["@context","@id","@id2"]
 
-
-}
-
-
-
-X="tempString"
-
-#1)Automatically identify the parent_attributes for a given JSON
 data=json.loads(json_string)
-for attribute in data:
-    #Check to see if attribute is a valid attribute
-    if(attribute in parent_attributes):
-        X=attribute
-        print(attribute)
-    else:
-        print("Invalid Json")
-        exit()
-
-
-#2)Automatically identify the child attributes
-
-
-#Obtain the child attributes
-child_attributes=data.get(X)
-print(child_attributes)
-
-print(dict2[X])
-if isinstance(child_attributes, dict):
-    for key in child_attributes:
-        if(key in dict2[X]):
-            print("True")
-        else:
-            print("Invalid Json")
-            exit()
-
-print("It passed")
-#Next we check all domains
-
-#To check for valid values see if it matches the conditions for a value
+test(data)
 
