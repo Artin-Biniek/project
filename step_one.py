@@ -42,7 +42,7 @@ for attribute in data:
 #Obtain the child attributes
 child_attributes=data.get(X,{})
 
-#Obtain the valid attributes for the given parent_attribute
+#Obtain the valid attributes for the given attribute
 valid_attributes=dict[X]
 
 
