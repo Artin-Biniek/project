@@ -4,67 +4,113 @@ import json
 
 
 """
+"""
+
+1)Pass in JSON
+2)Iterate over elements of JSON
+3)Check if elements belong to one of the valid attributes and check if its a dictionary
+4)If dictionary pass it once again as the new JSON
+5)Keep going until you find that its no longer a dictionary value
+6)It will automatically stop at that value and continue on with the next elem in the list when
+those child elements are done it will move to the next parent elements and so on.
+"""
+#Checking valid attributes
+def test(X):
+    for elem in X:
+        if elem in attributes and isinstance(X[elem],dict):
+            print(elem)
+            #Obtaining child attributes
+            print(X[elem])
+            test(X[elem])
+        elif elem in attributes and not isinstance(X[elem],dict):
+            #print(elem)
+            #print(X[elem])
+            test2(X[elem])
+        else:
+            print("invalid")
+            exit()
+
+
+"""
+context:
+is a valid url that first elem is https://www.w3.org/ns/credentials/v2
+the next 1...n elements is any existing url https:// || http:// (a string type)
+
+Id(as a parent):
+an existing url http://(a string type)
+
+Id(as a child of credential subject)
+did:sometext:sometext(a string type)
+
+Type(parent,can be a child of Vc object,verifiable presentation object,credentialStatus object,termsOfUse object,Evidence object):
+[someName,....,SomeNameN](string type) or Absolute Url [https://www.something.com...](string)
+
+Names:
+Can be a string "SomeName" or language value object
+
+language value object
+contains @value(a string value),@language(language tag),and may contain @direction(base direction string).
+
+
+
+
+"""
+#Type checking
+def test2(elem):
+    print("temp")
+    if elem in values:
+        print(type(elem))
+    else:
+        print("invalid")
+        exit()
+
 
 #Example
 json_string= '''
 {
     "@context":{
-        "@id":"https://www.w3.org/ns/credentials/v2",
-        "@type": "https://www.w3.org/2001/XMLSchema#nonNegativeInteger"
-    
+        "@type":{
+            "aud":"@id",
+            "@protected": 100
+
+        }
     }
 }
 
 '''
+def get_keys(data):
+    keys = []
+    if isinstance(data, dict):
+        for key, value in data.items():
+            keys.append(key)
+            keys += get_keys(value)
+    elif isinstance(data, list):
+        for value in data:
+            keys += get_keys(value)
+    return keys
 
-parent_attributes=["@context"]
-#Concerned about child attributes
-dict2={
-    "@context":["@id","@type"]
-    
-    
-    
-    }
-#Concerned about values of child attributes or of parent attributes
-dict3={
-
-
-}
-
-
-
-X="tempString"
-
-#1)Automatically identify the parent_attributes for a given JSON
-data=json.loads(json_string)
-for attribute in data:
-    #Check to see if attribute is a valid attribute
-    if(attribute in parent_attributes):
-        X=attribute
-        print(attribute)
+def get_values(data):
+    values = []
+    if isinstance(data, dict):
+        for value in data.values():
+            values += get_values(value)
+    elif isinstance(data, list):
+        for item in data:
+            values += get_values(item)
     else:
-        print("Invalid Json")
-        exit()
+        values.append(data)
+    return values
 
 
-#2)Automatically identify the child attributes
+with open('op.txt', 'r') as file:
+    data = json.load(file)
 
 
-#Obtain the child attributes
-child_attributes=data.get(X)
-print(child_attributes)
+attributes=set(get_keys(data))
 
-print(dict2[X])
-if isinstance(child_attributes, dict):
-    for key in child_attributes:
-        if(key in dict2[X]):
-            print("True")
-        else:
-            print("Invalid Json")
-            exit()
+values=set(get_values(data))
 
-print("It passed")
-#Next we check all domains
-
-#To check for valid values see if it matches the conditions for a value
+#attributes=["@context","@id","@id2"]
+data=json.loads(json_string)
+test(data)
 
