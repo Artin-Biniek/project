@@ -8,16 +8,6 @@ import re
 4)parent and child of child.... relationship checks.
 
 """
-"""
-
-1)Pass in JSON
-2)Iterate over elements of JSON
-3)Check if elements belong to oe of the valid attributes and check if its a dictionary
-4)If dictionary pass it oncen again as the new JSON
-5)Keep going until you find that its no longer a dictionary value
-6)It will automatically stop at that value and continue on with the next elem in the list when
-those child elements are done it will move to the next parent elements and so on.
-"""
 
 #Building dictionary
 def buildingDict(X):
