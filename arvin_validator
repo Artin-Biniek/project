@@ -1,0 +1,463 @@
+from datetime import datetime
+from dateutil import parser
+
+import json
+
+import validators
+
+json_ld_schema = '''
+{
+  "@context": {
+    "@protected": true,
+    "@vocab": "https://www.w3.org/ns/credentials/issuer-dependent#",
+
+    "id": "@id",
+    "type": "@type",
+
+    "kid": {
+      "@id": "https://www.iana.org/assignments/jose#kid",
+      "@type": "@id"
+    },
+    "iss": {
+      "@id": "https://www.iana.org/assignments/jose#iss",
+      "@type": "@id"
+    },
+    "sub": {
+      "@id": "https://www.iana.org/assignments/jose#sub",
+      "@type": "@id"
+    },
+    "jku": {
+      "@id": "https://www.iana.org/assignments/jose#jku",
+      "@type": "@id"
+    },
+    "x5u": {
+      "@id": "https://www.iana.org/assignments/jose#x5u",
+      "@type": "@id"
+    },
+    "aud": {
+      "@id": "https://www.iana.org/assignments/jwt#aud",
+      "@type": "@id"
+    },
+    "exp": {
+      "@id": "https://www.iana.org/assignments/jwt#exp",
+      "@type": "https://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+    },
+    "nbf": {
+      "@id": "https://www.iana.org/assignments/jwt#nbf",
+      "@type": "https://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+    },
+    "iat": {
+      "@id": "https://www.iana.org/assignments/jwt#iat",
+      "@type": "https://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+    },
+    "cnf": {
+      "@id": "https://www.iana.org/assignments/jwt#cnf",
+      "@context": {
+        "@protected": true,
+        "kid": {
+          "@id": "https://www.iana.org/assignments/jwt#kid",
+          "@type": "@id"
+        },
+        "jwk": {
+          "@id": "https://www.iana.org/assignments/jwt#jwk",
+          "@type": "@json"
+        }
+      }
+    },
+    "_sd_alg": {
+      "@id": "https://www.iana.org/assignments/jwt#_sd_alg"
+    },
+    "_sd": {
+      "@id": "https://www.iana.org/assignments/jwt#_sd"
+    },
+    "...": {
+      "@id": "https://www.iana.org/assignments/jwt#..."
+    },
+
+    "digestSRI": {
+      "@id": "https://www.w3.org/2018/credentials#digestSRI",
+      "@type": "https://www.w3.org/2018/credentials#sriString"
+    },
+    "digestMultibase": {
+      "@id": "https://w3id.org/security#digestMultibase",
+      "@type": "https://w3id.org/security#multibase"
+    },
+
+    "mediaType": {
+      "@id": "https://schema.org/encodingFormat"
+    },
+
+    "description": "https://schema.org/description",
+    "name": "https://schema.org/name",
+
+    "EnvelopedVerifiableCredential":
+      "https://www.w3.org/2018/credentials#EnvelopedVerifiableCredential",
+
+    "EnvelopedVerifiablePresentation":
+      "https://www.w3.org/2018/credentials#EnvelopedVerifiablePresentation",
+
+    "VerifiableCredential": {
+      "@id": "https://www.w3.org/2018/credentials#VerifiableCredential",
+      "@context": {
+        "@protected": true,
+
+        "id": "@id",
+        "type": "@type",
+
+        "credentialSchema": {
+          "@id": "https://www.w3.org/2018/credentials#credentialSchema",
+          "@type": "@id"
+        },
+        "credentialStatus": {
+          "@id": "https://www.w3.org/2018/credentials#credentialStatus",
+          "@type": "@id"
+        },
+        "credentialSubject": {
+          "@id": "https://www.w3.org/2018/credentials#credentialSubject",
+          "@type": "@id"
+        },
+        "description": "https://schema.org/description",
+        "evidence": {
+          "@id": "https://www.w3.org/2018/credentials#evidence",
+          "@type": "@id"
+        },
+        "validFrom": {
+          "@id": "https://www.w3.org/2018/credentials#validFrom",
+          "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+        },
+        "validUntil": {
+          "@id": "https://www.w3.org/2018/credentials#validUntil",
+          "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+        },
+        "issuer": {
+          "@id": "https://www.w3.org/2018/credentials#issuer",
+          "@type": "@id"
+        },
+        "name": "https://schema.org/name",
+        "proof": {
+          "@id": "https://w3id.org/security#proof",
+          "@type": "@id",
+          "@container": "@graph"
+        },
+        "refreshService": {
+          "@id": "https://www.w3.org/2018/credentials#refreshService",
+          "@type": "@id"
+        },
+        "termsOfUse": {
+          "@id": "https://www.w3.org/2018/credentials#termsOfUse",
+          "@type": "@id"
+        },
+        "confidenceMethod": {
+          "@id": "https://www.w3.org/2018/credentials#confidenceMethod",
+          "@type": "@id"
+        },
+        "relatedResource": {
+          "@id": "https://www.w3.org/2018/credentials#relatedResource",
+          "@type": "@id"
+        }
+      }
+    },
+
+    "VerifiablePresentation": {
+      "@id": "https://www.w3.org/2018/credentials#VerifiablePresentation",
+      "@context": {
+        "@protected": true,
+
+        "id": "@id",
+        "type": "@type",
+
+        "holder": {
+          "@id": "https://www.w3.org/2018/credentials#holder",
+          "@type": "@id"
+        },
+        "proof": {
+          "@id": "https://w3id.org/security#proof",
+          "@type": "@id",
+          "@container": "@graph"
+        },
+        "verifiableCredential": {
+          "@id": "https://www.w3.org/2018/credentials#verifiableCredential",
+          "@type": "@id",
+          "@container": "@graph",
+          "@context": null
+        },
+        "termsOfUse": {
+          "@id": "https://www.w3.org/2018/credentials#termsOfUse",
+          "@type": "@id"
+        }
+      }
+    },
+
+    "JsonSchemaCredential": "https://www.w3.org/2018/credentials#JsonSchemaCredential",
+
+    "JsonSchema": {
+      "@id": "https://www.w3.org/2018/credentials#JsonSchema",
+      "@context": {
+        "@protected": true,
+
+        "id": "@id",
+        "type": "@type",
+
+        "jsonSchema": {
+          "@id": "https://w3.org/2018/credentials#jsonSchema",
+          "@type": "@json"
+        }
+      }
+    },
+
+    "BitstringStatusListCredential": "https://www.w3.org/ns/credentials/status#BitstringStatusListCredential",
+
+    "BitstringStatusList": {
+      "@id": "https://www.w3.org/ns/credentials/status#BitstringStatusList",
+      "@context": {
+        "@protected": true,
+
+        "id": "@id",
+        "type": "@type",
+
+        "statusPurpose":
+          "https://www.w3.org/ns/credentials/status#statusPurpose",
+        "encodedList": {
+          "@id": "https://www.w3.org/ns/credentials/status#encodedList",
+          "@type": "https://w3id.org/security#multibase"
+        },
+        "ttl": "https://www.w3.org/ns/credentials/status#ttl",
+        "statusReference": {
+          "@id": "https://www.w3.org/ns/credentials/status#statusReference",
+          "@type": "@id"
+        },
+        "statusSize": {
+            "@id": "https://www.w3.org/ns/credentials/status#statusSize",
+            "@type": "https://www.w3.org/2001/XMLSchema#positiveInteger"
+        },
+        "statusMessage": {
+          "@id": "https://www.w3.org/ns/credentials/status#statusMessage",
+          "@context": {
+            "@protected": true,
+
+            "id": "@id",
+            "type": "@type",
+
+            "status": "https://www.w3.org/ns/credentials/status#status",
+            "message": "https://www.w3.org/ns/credentials/status#message"
+          }
+        }
+      }
+    },
+
+    "BitstringStatusListEntry": {
+      "@id":
+        "https://www.w3.org/ns/credentials/status#BitstringStatusListEntry",
+      "@context": {
+        "@protected": true,
+
+        "id": "@id",
+        "type": "@type",
+
+        "statusPurpose":
+          "https://www.w3.org/ns/credentials/status#statusPurpose",
+        "statusListIndex":
+          "https://www.w3.org/ns/credentials/status#statusListIndex",
+        "statusListCredential": {
+          "@id":
+            "https://www.w3.org/ns/credentials/status#statusListCredential",
+          "@type": "@id"
+        }
+      }
+    },
+
+    "DataIntegrityProof": {
+      "@id": "https://w3id.org/security#DataIntegrityProof",
+      "@context": {
+        "@protected": true,
+        "id": "@id",
+        "type": "@type",
+        "challenge": "https://w3id.org/security#challenge",
+        "created": {
+          "@id": "http://purl.org/dc/terms/created",
+          "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+        },
+        "domain": "https://w3id.org/security#domain",
+        "expires": {
+          "@id": "https://w3id.org/security#expiration",
+          "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+        },
+        "nonce": "https://w3id.org/security#nonce",
+        "previousProof": {
+          "@id": "https://w3id.org/security#previousProof",
+          "@type": "@id"
+        },
+        "proofPurpose": {
+          "@id": "https://w3id.org/security#proofPurpose",
+          "@type": "@vocab",
+          "@context": {
+            "@protected": true,
+            "id": "@id",
+            "type": "@type",
+            "assertionMethod": {
+              "@id": "https://w3id.org/security#assertionMethod",
+              "@type": "@id",
+              "@container": "@set"
+            },
+            "authentication": {
+              "@id": "https://w3id.org/security#authenticationMethod",
+              "@type": "@id",
+              "@container": "@set"
+            },
+            "capabilityInvocation": {
+              "@id": "https://w3id.org/security#capabilityInvocationMethod",
+              "@type": "@id",
+              "@container": "@set"
+            },
+            "capabilityDelegation": {
+              "@id": "https://w3id.org/security#capabilityDelegationMethod",
+              "@type": "@id",
+              "@container": "@set"
+            },
+            "keyAgreement": {
+              "@id": "https://w3id.org/security#keyAgreementMethod",
+              "@type": "@id",
+              "@container": "@set"
+            }
+          }
+        },
+        "cryptosuite": {
+          "@id": "https://w3id.org/security#cryptosuite",
+          "@type": "https://w3id.org/security#cryptosuiteString"
+        },
+        "proofValue": {
+          "@id": "https://w3id.org/security#proofValue",
+          "@type": "https://w3id.org/security#multibase"
+        },
+        "verificationMethod": {
+          "@id": "https://w3id.org/security#verificationMethod",
+          "@type": "@id"
+        }
+      }
+    }
+  }
+}
+'''
+
+json_ld_data = '''
+{
+  "@context": [
+    "https://www.w3.org/ns/credentials/v2"
+  ],
+  "type": [
+    "VerifiableCredential"
+  ],
+  "issuer": "did:example:issuer",
+  "id": null,
+  "credentialSubject": {
+    "id": "did:example:subject"
+  }
+}
+'''
+
+
+class Validator:
+    def __init__(self, data, schema):
+        self.data = data
+        self.schema = schema
+        self.type = None
+        self.error = ''
+
+    def get_type(self, data=None):
+        data = data or self.data
+        if 'type' in data:
+            return data['type']
+        elif '@type' in data:
+            return data['@type']
+        return None
+
+    def is_uri_validators(self, uri):
+        is_valid = validators.url(uri) or validators.email(uri) or validators.domain(uri) or uri.startswith("did:")
+        if not is_valid:
+            self.error = f'Invalid URI: {uri}'
+        return is_valid
+
+    def check_id_type(self, value):
+        if isinstance(value, str):
+            return self.is_uri_validators(value)
+        if isinstance(value, dict):
+            if 'id' not in value:
+                self.error = f'id is not in: {value}'
+                return False
+            return self.is_uri_validators(value['id'])
+
+    def is_valid_date(self, date_string):
+        try:
+            # Parse the date string to a datetime object using dateutil.parser
+            date_obj = parser.isoparse(date_string)
+            return True
+        except ValueError:
+            self.error = f'invalid date: {date_string}'
+            return False
+
+    def validate_value(self, type, value, schema):
+        if type == '@id':
+            return self.check_id_type(value)
+        elif type == 'https://www.w3.org/2001/XMLSchema#nonNegativeInteger':
+            return isinstance(value, int) and int(value) < 0
+        elif type == 'http://www.w3.org/2001/XMLSchema#dateTime':
+            return self.is_valid_date(value)
+        else:
+            for key, new_value in value.items():
+                new_schema = schema[type]['@context']
+                new_type = self.get_type(new_schema[key])
+                is_valid = self.validate_value(new_type, new_value, new_schema)
+                if not is_valid:
+                    self.error = f'{new_value} for {key} is invalid'
+                    return False
+        return True
+
+    def validate_context(self):
+        if '@context' not in self.data:
+            self.error = f'missing @context'
+            return False
+        if not isinstance(self.data['@context'], list):
+            self.error = f'@context must be a list'
+            return False
+        for uri in self.data['@context']:
+            if not isinstance(uri, str):
+                self.error = f'{uri} is not a string'
+                return False
+            if not self.is_uri_validators(uri):
+                return False
+        return True
+
+    def validate(self):
+        is_context_valid = self.validate_context()
+        if not is_context_valid:
+            return False
+        type = self.get_type()
+        if type is None:
+            return False
+        type_lst = []
+        if isinstance(type, str):
+            type_lst.append(type)
+        if isinstance(type, list):
+            for item in type:
+                type_lst.append(item)
+        if 'VerifiableCredential' in type_lst:
+            self.type = 'VerifiableCredential'
+        elif 'VerificationPresentation' in type_lst:
+            self.type = 'VerificationPresentation'
+        new_data = {}
+        for key, value in self.data.items():
+            if key == '@context' or key == 'type':
+                continue
+            new_data[key] = value
+        return self.validate_value(self.type, new_data, self.schema['@context'])
+
+
+data_dict = json.loads(json_ld_data)
+schema_dict = json.loads(json_ld_schema)
+validator = Validator(data_dict, schema_dict)
+
+data_type = validator.get_type()
+
+is_data_valid = validator.validate()
+print(is_data_valid)
+print(validator.error)
