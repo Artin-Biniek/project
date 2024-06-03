@@ -341,19 +341,31 @@ json_ld_schema = '''
 
 json_ld_data = '''
 {
-  "@context": [
-    "https://www.w3.org/ns/credentials/v2"
-  ],
   "type": [
     "VerifiableCredential"
   ],
   "issuer": "did:example:issuer",
-  "id": null,
   "credentialSubject": {
     "id": "did:example:subject"
   }
 }
 '''
+
+required_attributes = {
+    "VerifiableCredential": ["type", "credentialSubject", "issuer"],
+    "VerifiablePresentation": ["id", "type", "holder", "proof"],
+    "JsonSchema": ["id", "type", "jsonSchema"],
+    "BitstringStatusList": ["id", "type", "statusPurpose", "encodedList", "ttl", "statusReference", "statusSize"],
+    "BitstringStatusListEntry": ["id", "type", "statusPurpose", "statusListIndex", "statusListCredential"],
+    "DataIntegrityProof": ["id", "type", "challenge", "created", "domain", "expires", "nonce", "previousProof",
+                           "proofPurpose", "cryptosuite", "proofValue", "verificationMethod"],
+    "cnf": ["kid", "jwk"],
+    "credentialSchema": ["type", "id"],
+    "credentialStatus": ["type"],
+    "evidence": ["type"],
+    "termsOfUse": ["type"],
+    "issuer": ["id"]
+}
 
 
 class Validator:
@@ -372,19 +384,22 @@ class Validator:
         return None
 
     def is_uri_validators(self, uri):
+        if not isinstance(uri, str):
+            return False
         is_valid = validators.url(uri) or validators.email(uri) or validators.domain(uri) or uri.startswith("did:")
         if not is_valid:
             self.error = f'Invalid URI: {uri}'
         return is_valid
 
     def check_id_type(self, value):
+        if not isinstance(value, (str, dict)):
+            return False
         if isinstance(value, str):
             return self.is_uri_validators(value)
         if isinstance(value, dict):
-            if 'id' not in value:
-                self.error = f'id is not in: {value}'
-                return False
-            return self.is_uri_validators(value['id'])
+            if 'id' in value:
+                return self.is_uri_validators(value['id'])
+        return True
 
     def is_valid_date(self, date_string):
         try:
@@ -395,6 +410,23 @@ class Validator:
             self.error = f'invalid date: {date_string}'
             return False
 
+    def check_req_attributes(self, key, value):
+        if key not in required_attributes:
+            return True
+        if not isinstance(list, object):
+            return False
+        if isinstance(value, list):
+            for val in value:
+                if not self.check_req_attributes(key, val):
+                    return False
+        else:
+            for req_att in required_attributes[key]:
+                if req_att not in value:
+                    self.error = f'attribute: {req_att} is required for {key}'
+                    return False
+        return True
+
+
     def validate_value(self, type, value, schema):
         if type == '@id':
             return self.check_id_type(value)
@@ -404,6 +436,9 @@ class Validator:
             return self.is_valid_date(value)
         else:
             for key, new_value in value.items():
+                req_attr_exist = self.check_req_attributes(key, new_value)
+                if not req_attr_exist:
+                    return False
                 new_schema = schema[type]['@context']
                 new_type = self.get_type(new_schema[key])
                 is_valid = self.validate_value(new_type, new_value, new_schema)
@@ -444,6 +479,11 @@ class Validator:
             self.type = 'VerifiableCredential'
         elif 'VerificationPresentation' in type_lst:
             self.type = 'VerificationPresentation'
+        else:
+            self.error = f'type must include VerifiableCredential or VerificationPresentation'
+            return False
+        if not self.check_req_attributes(self.type, self.data):
+            return False
         new_data = {}
         for key, value in self.data.items():
             if key == '@context' or key == 'type':
