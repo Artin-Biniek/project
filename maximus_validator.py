@@ -14,10 +14,12 @@ if text=="a":
         json_ld_schema = file.read()
     VC_SCHEMA = 'https://www.w3.org/ns/credentials/v2'
     dir = './tests/input/'
+    datetime_type='http://www.w3.org/2001/XMLSchema#dateTime'
 if text=="b":
     with open('v1.txt', 'r') as file:
         json_ld_schema = file.read()
     VC_SCHEMA = 'https://www.w3.org/2018/credentials/v1'
+    datetime_type='xsd:dateTime'
     dir = './vc-data-model-1.0/input/'
 
 required_attributes = {
@@ -147,7 +149,7 @@ class Validator:
             return self.check_id_type(value)
         elif type == 'https://www.w3.org/2001/XMLSchema#nonNegativeInteger':
             return isinstance(value, int) and int(value) < 0
-        elif type == 'http://www.w3.org/2001/XMLSchema#dateTime':
+        elif type == datetime_type:
             return self.is_valid_date(value)
         else:
             for key, new_value in value.items():
