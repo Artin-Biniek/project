@@ -7,6 +7,7 @@ from dateutil import parser
 VERIFIABLE_CREDENTIAL = 'VerifiableCredential'
 VERIFIABLE_PRESENTATION = 'VerifiablePresentation'
 VC_SCHEMA = 'https://www.w3.org/ns/credentials/v2'
+VC_SCHEMA1.1='https://www.w3.org/2018/credentials/v1'
 
 with open('op.txt', 'r') as file:
     json_ld_schema = file.read()
@@ -177,7 +178,7 @@ class Validator:
             self.error = f'@context must be a list'
             return False
         keys_list = []
-        if self.data['@context'][0] != VC_SCHEMA:
+        if self.data['@context'][0] != VC_SCHEMA or self.data['@context'][0] != VC_SCHEMA1.1:
             self.error = 'missing base context'
             return False
         for e in self.data['@context']:
