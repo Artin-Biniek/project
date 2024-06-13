@@ -1,0 +1,225 @@
+Enter a)V2.0 or b)V1.1: ['example-6-bad-expirationDate.jsonld', 'example-7-bad-missing-id.jsonld', 'example-4-bad-issuanceDate.jsonld', 'example-016-jwt-presentation-no-iss.jsonld', 'example-010.jsonld', 'example-8-bad-missing-proof-type.jsonld', 'example-016-jwt-with-embedded-proof.jsonld', 'example-017-missing-verifiableCredential.jsonld', 'example-016-jwt-no-exp.jsonld', 'example-3-bad-missing-type.jsonld', 'example-5.jsonld', 'example-015-zkp-bad-proof-missing-type.jsonld', 'example-015-zkp-vp.jsonld', 'example-016-jwt-no-jti.jsonld', 'example-014-bad-no-credential-subject.jsonld', 'example-1-bad-cardinality.jsonld', 'example-015-zkp-vp-bad-no-credential-schema.jsonld', 'example-7.jsonld', 'example-012.jsonld', 'example-4-bad-issuer-cardinality.jsonld', 'example-015-zkp-vp-bad-missing-proof.jsonld', 'example-014-credential-subjects.jsonld', 'example-016-jwt.jsonld', 'example-3.jsonld', 'example-4-bad-missing-issuer.jsonld', 'example-5-bad-proof-missing-type.jsonld', 'example-2.jsonld', 'example-016-jwt-presentation.jsonld', 'example-013.jsonld', 'example-3-bad-cardinality.jsonld', 'example-015-zkp-bad-no-credential-schema.jsonld', 'example-4-bad-issuanceDate-cardinality.jsonld', 'example-7-bad-missing-type.jsonld', 'example-015-zkp-credential-schema-array.jsonld', 'example-8.jsonld', 'example-015-zkp-bad-no-credential-schema-type.jsonld', 'vccredential.jsonld', 'example-8-bad-type.jsonld', 'example-1-object-context.jsonld', 'example-009.jsonld', 'example-4-bad-issuer-uri.jsonld', 'example-6-bad-cardinality.jsonld', 'example-015-zkp.jsonld', 'example-4.jsonld', 'example-6.jsonld', 'example-4-bad-missing-issuanceDate.jsonld', 'example-2-bad-cardinality.jsonld', 'example-1.jsonld', 'example-015-zkp-bad-no-credential-schema-id.jsonld', 'example-015-zkp-bad-no-proof.jsonld', 'example-1-bad-url.jsonld', 'example-011.jsonld', 'example-016-jwt-presentation-no-jti.jsonld']
+example-6-bad-expirationDate.jsonld
+False
+01/01/2020 for expirationDate is invalid
+-------------------------------------------
+example-7-bad-missing-id.jsonld
+False
+Invalid URI: CredentialStatusList2017
+-------------------------------------------
+example-4-bad-issuanceDate.jsonld
+False
+01/01/2010 for issuanceDate is invalid
+-------------------------------------------
+example-016-jwt-presentation-no-iss.jsonld
+wrong result for example-016-jwt-presentation-no-iss.jsonld
+False
+eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImRpZDpleGFtcGxlOmFiZmUxM2Y3MTIxMjA0MzFjMjc2ZTEyZWNhYiNrZXlzLTEifQ.eyJzdWIiOiJkaWQ6ZXhhbXBsZTplYmZlYjFmNzEyZWJjNmYxYzI3NmUxMmVjMjEiLCJqdGkiOiJodHRwOi8vZXhhbXBsZS5lZHUvY3JlZGVudGlhbHMvMzczMiIsImlzcyI6Imh0dHBzOi8vZXhhbXBsZS5jb20va2V5cy9mb28uandrIiwibmJmIjoxNTQxNDkzNzI0LCJpYXQiOjE1NDE0OTM3MjQsImV4cCI6MTU3MzAyOTcyMywibm9uY2UiOiI2NjAhNjM0NUZTZXIiLCJ2YyI6eyJAY29udGV4dCI6WyJodHRwczovL3d3dy53My5vcmcvMjAxOC9jcmVkZW50aWFscy92MSIsImh0dHBzOi8vd3d3LnczLm9yZy8yMDE4L2NyZWRlbnRpYWxzL2V4YW1wbGVzL3YxIl0sInR5cGUiOlsiVmVyaWZpYWJsZUNyZWRlbnRpYWwiLCJVbml2ZXJzaXR5RGVncmVlQ3JlZGVudGlhbCJdLCJjcmVkZW50aWFsU3ViamVjdCI6eyJkZWdyZWUiOnsidHlwZSI6IkJhY2hlbG9yRGVncmVlIiwibmFtZSI6IjxzcGFuIGxhbmc9J2ZyLUNBJz5CYWNjYWxhdXLDqWF0IGVuIG11c2lxdWVzIG51bcOpcmlxdWVzPC9zcGFuPiJ9fX19.KLJo5GAyBND3LDTn9H7FQokEsUEi8jKwXhGvoN3JtRa51xrNDgXDb0cq1UTYB-rK4Ft9YVmR1NI_ZOF8oGc_7wAp8PHbF2HaWodQIoOBxxT-4WNqAxft7ET6lkH-4S6Ux3rSGAmczMohEEf8eCeN-jC8WekdPl6zKZQj0YPB1rx6X0-xlFBs7cl6Wt8rfBP_tZ9YgVWrQmUWypSioc0MUyiphmyEbLZagTyPlUyflGlEdqrZAv6eSe6RtxJy6M1-lD7a5HTzanYTWBPAUHDZGyGKXdJw-W_x0IWChBzI8t3kpG253fg6V3tPgHeKXE94fz_QpYfg--7kLsyBAfQGbg for verifiableCredential is invalid
+-------------------------------------------
+example-010.jsonld
+True
+
+-------------------------------------------
+example-8-bad-missing-proof-type.jsonld
+False
+attribute: type is required for proof
+-------------------------------------------
+example-016-jwt-with-embedded-proof.jsonld
+True
+
+-------------------------------------------
+example-017-missing-verifiableCredential.jsonld
+True
+
+-------------------------------------------
+example-016-jwt-no-exp.jsonld
+True
+
+-------------------------------------------
+example-3-bad-missing-type.jsonld
+False
+type must include VerifiableCredential or VerifiablePresentation
+-------------------------------------------
+example-5.jsonld
+True
+
+-------------------------------------------
+example-015-zkp-bad-proof-missing-type.jsonld
+False
+attribute: type is required for proof
+-------------------------------------------
+example-015-zkp-vp.jsonld
+True
+
+-------------------------------------------
+example-016-jwt-no-jti.jsonld
+True
+
+-------------------------------------------
+example-014-bad-no-credential-subject.jsonld
+False
+attribute: credentialSubject is required for VerifiableCredential
+-------------------------------------------
+example-1-bad-cardinality.jsonld
+validation failed for file example-1-bad-cardinality.jsonld
+list index out of range
+example-015-zkp-vp-bad-no-credential-schema.jsonld
+wrong result for example-015-zkp-vp-bad-no-credential-schema.jsonld
+True
+
+-------------------------------------------
+example-7.jsonld
+wrong result for example-7.jsonld
+False
+Invalid URI: CredentialStatusList2017
+-------------------------------------------
+example-012.jsonld
+True
+
+-------------------------------------------
+example-4-bad-issuer-cardinality.jsonld
+wrong result for example-4-bad-issuer-cardinality.jsonld
+True
+
+-------------------------------------------
+example-015-zkp-vp-bad-missing-proof.jsonld
+wrong result for example-015-zkp-vp-bad-missing-proof.jsonld
+True
+
+-------------------------------------------
+example-014-credential-subjects.jsonld
+True
+
+-------------------------------------------
+example-016-jwt.jsonld
+True
+
+-------------------------------------------
+example-3.jsonld
+True
+
+-------------------------------------------
+example-4-bad-missing-issuer.jsonld
+False
+attribute: issuer is required for VerifiableCredential
+-------------------------------------------
+example-5-bad-proof-missing-type.jsonld
+False
+attribute: type is required for proof
+-------------------------------------------
+example-2.jsonld
+True
+
+-------------------------------------------
+example-016-jwt-presentation.jsonld
+wrong result for example-016-jwt-presentation.jsonld
+False
+eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImRpZDpleGFtcGxlOmFiZmUxM2Y3MTIxMjA0MzFjMjc2ZTEyZWNhYiNrZXlzLTEifQ.eyJzdWIiOiJkaWQ6ZXhhbXBsZTplYmZlYjFmNzEyZWJjNmYxYzI3NmUxMmVjMjEiLCJqdGkiOiJodHRwOi8vZXhhbXBsZS5lZHUvY3JlZGVudGlhbHMvMzczMiIsImlzcyI6Imh0dHBzOi8vZXhhbXBsZS5jb20va2V5cy9mb28uandrIiwibmJmIjoxNTQxNDkzNzI0LCJpYXQiOjE1NDE0OTM3MjQsImV4cCI6MTU3MzAyOTcyMywibm9uY2UiOiI2NjAhNjM0NUZTZXIiLCJ2YyI6eyJAY29udGV4dCI6WyJodHRwczovL3d3dy53My5vcmcvMjAxOC9jcmVkZW50aWFscy92MSIsImh0dHBzOi8vd3d3LnczLm9yZy8yMDE4L2NyZWRlbnRpYWxzL2V4YW1wbGVzL3YxIl0sInR5cGUiOlsiVmVyaWZpYWJsZUNyZWRlbnRpYWwiLCJVbml2ZXJzaXR5RGVncmVlQ3JlZGVudGlhbCJdLCJjcmVkZW50aWFsU3ViamVjdCI6eyJkZWdyZWUiOnsidHlwZSI6IkJhY2hlbG9yRGVncmVlIiwibmFtZSI6IjxzcGFuIGxhbmc9J2ZyLUNBJz5CYWNjYWxhdXLDqWF0IGVuIG11c2lxdWVzIG51bcOpcmlxdWVzPC9zcGFuPiJ9fX19.KLJo5GAyBND3LDTn9H7FQokEsUEi8jKwXhGvoN3JtRa51xrNDgXDb0cq1UTYB-rK4Ft9YVmR1NI_ZOF8oGc_7wAp8PHbF2HaWodQIoOBxxT-4WNqAxft7ET6lkH-4S6Ux3rSGAmczMohEEf8eCeN-jC8WekdPl6zKZQj0YPB1rx6X0-xlFBs7cl6Wt8rfBP_tZ9YgVWrQmUWypSioc0MUyiphmyEbLZagTyPlUyflGlEdqrZAv6eSe6RtxJy6M1-lD7a5HTzanYTWBPAUHDZGyGKXdJw-W_x0IWChBzI8t3kpG253fg6V3tPgHeKXE94fz_QpYfg--7kLsyBAfQGbg for verifiableCredential is invalid
+-------------------------------------------
+example-013.jsonld
+True
+
+-------------------------------------------
+example-3-bad-cardinality.jsonld
+False
+type must include VerifiableCredential or VerifiablePresentation
+-------------------------------------------
+example-015-zkp-bad-no-credential-schema.jsonld
+wrong result for example-015-zkp-bad-no-credential-schema.jsonld
+True
+
+-------------------------------------------
+example-4-bad-issuanceDate-cardinality.jsonld
+wrong result for example-4-bad-issuanceDate-cardinality.jsonld
+True
+
+-------------------------------------------
+example-7-bad-missing-type.jsonld
+False
+attribute: type is required for credentialStatus
+-------------------------------------------
+example-015-zkp-credential-schema-array.jsonld
+True
+
+-------------------------------------------
+example-8.jsonld
+True
+
+-------------------------------------------
+example-015-zkp-bad-no-credential-schema-type.jsonld
+False
+attribute: type is required for credentialSchema
+-------------------------------------------
+vccredential.jsonld
+True
+
+-------------------------------------------
+example-8-bad-type.jsonld
+False
+type must include VerifiableCredential or VerifiablePresentation
+-------------------------------------------
+example-1-object-context.jsonld
+True
+
+-------------------------------------------
+example-009.jsonld
+True
+
+-------------------------------------------
+example-4-bad-issuer-uri.jsonld
+False
+example for issuer is invalid
+-------------------------------------------
+example-6-bad-cardinality.jsonld
+wrong result for example-6-bad-cardinality.jsonld
+True
+
+-------------------------------------------
+example-015-zkp.jsonld
+True
+
+-------------------------------------------
+example-4.jsonld
+True
+
+-------------------------------------------
+example-6.jsonld
+True
+
+-------------------------------------------
+example-4-bad-missing-issuanceDate.jsonld
+wrong result for example-4-bad-missing-issuanceDate.jsonld
+True
+
+-------------------------------------------
+example-2-bad-cardinality.jsonld
+wrong result for example-2-bad-cardinality.jsonld
+True
+
+-------------------------------------------
+example-1.jsonld
+True
+
+-------------------------------------------
+example-015-zkp-bad-no-credential-schema-id.jsonld
+False
+attribute: id is required for credentialSchema
+-------------------------------------------
+example-015-zkp-bad-no-proof.jsonld
+wrong result for example-015-zkp-bad-no-proof.jsonld
+True
+
+-------------------------------------------
+example-1-bad-url.jsonld
+False
+missing base context
+-------------------------------------------
+example-011.jsonld
+True
+
+-------------------------------------------
+example-016-jwt-presentation-no-jti.jsonld
+wrong result for example-016-jwt-presentation-no-jti.jsonld
+False
+eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImRpZDpleGFtcGxlOmFiZmUxM2Y3MTIxMjA0MzFjMjc2ZTEyZWNhYiNrZXlzLTEifQ.eyJzdWIiOiJkaWQ6ZXhhbXBsZTplYmZlYjFmNzEyZWJjNmYxYzI3NmUxMmVjMjEiLCJqdGkiOiJodHRwOi8vZXhhbXBsZS5lZHUvY3JlZGVudGlhbHMvMzczMiIsImlzcyI6Imh0dHBzOi8vZXhhbXBsZS5jb20va2V5cy9mb28uandrIiwibmJmIjoxNTQxNDkzNzI0LCJpYXQiOjE1NDE0OTM3MjQsImV4cCI6MTU3MzAyOTcyMywibm9uY2UiOiI2NjAhNjM0NUZTZXIiLCJ2YyI6eyJAY29udGV4dCI6WyJodHRwczovL3d3dy53My5vcmcvMjAxOC9jcmVkZW50aWFscy92MSIsImh0dHBzOi8vd3d3LnczLm9yZy8yMDE4L2NyZWRlbnRpYWxzL2V4YW1wbGVzL3YxIl0sInR5cGUiOlsiVmVyaWZpYWJsZUNyZWRlbnRpYWwiLCJVbml2ZXJzaXR5RGVncmVlQ3JlZGVudGlhbCJdLCJjcmVkZW50aWFsU3ViamVjdCI6eyJkZWdyZWUiOnsidHlwZSI6IkJhY2hlbG9yRGVncmVlIiwibmFtZSI6IjxzcGFuIGxhbmc9J2ZyLUNBJz5CYWNjYWxhdXLDqWF0IGVuIG11c2lxdWVzIG51bcOpcmlxdWVzPC9zcGFuPiJ9fX19.KLJo5GAyBND3LDTn9H7FQokEsUEi8jKwXhGvoN3JtRa51xrNDgXDb0cq1UTYB-rK4Ft9YVmR1NI_ZOF8oGc_7wAp8PHbF2HaWodQIoOBxxT-4WNqAxft7ET6lkH-4S6Ux3rSGAmczMohEEf8eCeN-jC8WekdPl6zKZQj0YPB1rx6X0-xlFBs7cl6Wt8rfBP_tZ9YgVWrQmUWypSioc0MUyiphmyEbLZagTyPlUyflGlEdqrZAv6eSe6RtxJy6M1-lD7a5HTzanYTWBPAUHDZGyGKXdJw-W_x0IWChBzI8t3kpG253fg6V3tPgHeKXE94fz_QpYfg--7kLsyBAfQGbg for verifiableCredential is invalid
+-------------------------------------------

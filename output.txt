@@ -1,0 +1,388 @@
+Enter a)V2.0 or b)V1.1: presentation-missing-base-context-fail.json
+False
+missing base context
+-------------------------------------------
+credential-status-missing-id-ok.json
+wrong result for credential-status-missing-id-ok.json
+False
+Invalid URI: CredentialStatusList2017
+-------------------------------------------
+credential-ok.json
+True
+
+-------------------------------------------
+credential-refresh-no-type-fail.json
+False
+attribute: type is required for refreshService
+-------------------------------------------
+credential-refreshs-ok.json
+True
+
+-------------------------------------------
+credential-validuntil-ms-ok.json
+True
+
+-------------------------------------------
+credential-schema-non-url-id-fail.json
+False
+{'type': 'https://example.org/#ExampleTestSuiteSchema', 'id': 'https ://not-a-url.org/cd28a5c0-a3ca-4057-9e18-074769a54fdb'} for credentialSchema is invalid
+-------------------------------------------
+credential-issuer-url-ok.json
+wrong result for credential-issuer-url-ok.json
+False
+https://some-url/issuer/foo for issuer is invalid
+-------------------------------------------
+credential-subject-multiple-empty-fail.json
+False
+{} for credentialSubject is invalid
+-------------------------------------------
+credential-termsofuse-missing-type-fail.json
+False
+attribute: type is required for termsOfUse
+-------------------------------------------
+credential-issuer-nonurl-fail.json
+validation failed for file credential-issuer-nonurl-fail.json
+argument of type 'int' is not iterable
+credential-issuer-multi-language-description-ok.json
+True
+
+-------------------------------------------
+credential-proof-ok.json
+True
+
+-------------------------------------------
+presentation-optional-type-ok.json
+True
+
+-------------------------------------------
+credential-not-url-id-fail.json
+wrong result for credential-not-url-id-fail.json
+True
+
+-------------------------------------------
+credential-type-mapped-nonurl-fail.json
+False
+Invalid URI: https ://not-a-url#ExampleTestCredential
+-------------------------------------------
+credential-issuer-description-language-en-ok.json
+True
+
+-------------------------------------------
+credential-type-mapped-url-ok.json
+True
+
+-------------------------------------------
+credential-context-combo3-fail.json
+False
+Invalid URI: https ://not-a-url/contexts/example/v1
+-------------------------------------------
+presentation-vc-ok.json
+True
+
+-------------------------------------------
+credential-type-urls-order-2-ok.json
+True
+
+-------------------------------------------
+credential-subject-multi-id-fail.json
+False
+{'id': ['did:example:subject:one', 'did:example:subject:two']} for credentialSubject is invalid
+-------------------------------------------
+credential-redef-type-fail.json
+False
+reserved keywords can't be used in context
+-------------------------------------------
+credential-validfrom-tz-ok.json
+True
+
+-------------------------------------------
+presentation-derived-vc-missing-required-type-fail.json
+False
+eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJ2YyI6eyJAY29udGV4dCI6WyJodHRwczovL3d3dy53My5vcmcvbnMvY3JlZGVudGlhbHMvdjIiLCJodHRwczovL3d3dy53My5vcmcvbnMvY3JlZGVudGlhbHMvZXhhbXBsZXMvdjIiXSwiaWQiOiJodHRwOi8vZXhhbXBsZS5lZHUvY3JlZGVudGlhbHMvMzczMiIsInR5cGUiOlsiVW5pdmVyc2l0eURlZ3JlZUNyZWRlbnRpYWwiXSwiaXNzdWVyIjoiaHR0cHM6Ly9leGFtcGxlLmVkdS9pc3N1ZXJzLzU2NTA0OSIsInZhbGlkRnJvbSI6IjIwMTAtMDEtMDFUMDA6MDA6MDBaIiwiY3JlZGVudGlhbFN1YmplY3QiOnsiaWQiOiJkaWQ6ZXhhbXBsZTplYmZlYjFmNzEyZWJjNmYxYzI3NmUxMmVjMjEiLCJkZWdyZWUiOnsidHlwZSI6IkJhY2hlbG9yRGVncmVlIiwibmFtZSI6IkJhY2hlbG9yIG9mIFNjaWVuY2UgYW5kIEFydHMifX19LCJpc3MiOiJodHRwczovL2V4YW1wbGUuZWR1L2lzc3VlcnMvNTY1MDQ5IiwianRpIjoiaHR0cDovL2V4YW1wbGUuZWR1L2NyZWRlbnRpYWxzLzM3MzIiLCJzdWIiOiJkaWQ6ZXhhbXBsZTplYmZlYjFmNzEyZWJjNmYxYzI3NmUxMmVjMjEifQo=.0fkQPZOKlD0Sl0A798KBUNMOdGq90McQQIEtKU9tgSd9K1kRcxWVKDXQJcn_FJqLvo2bk793EHk-RTeEL1HyAQ for verifiableCredential is invalid
+-------------------------------------------
+credential-multi-id-fail.json
+wrong result for credential-multi-id-fail.json
+True
+
+-------------------------------------------
+credential-issuer-description-optional-ok.json
+True
+
+-------------------------------------------
+credential-no-type-fail.json
+False
+
+-------------------------------------------
+credential-evidences-ok.json
+True
+
+-------------------------------------------
+credential-refresh-ok.json
+True
+
+-------------------------------------------
+credential-refresh-no-id-fail.json
+False
+attribute: id is required for refreshService
+-------------------------------------------
+credential-evidence-ok.json
+True
+
+-------------------------------------------
+credential-schema-ok.json
+True
+
+-------------------------------------------
+credential-status-nonurl-id-fail.json
+False
+Invalid URI: CredentialStatusList2017
+-------------------------------------------
+credential-schemas-ok.json
+True
+
+-------------------------------------------
+presentation-multiple-vc-ok.json
+True
+
+-------------------------------------------
+credential-issuer-object-no-id-fail.json
+False
+attribute: id is required for issuer
+-------------------------------------------
+credential-optional-type-ok.json
+True
+
+-------------------------------------------
+credential-issuer-name-extra-prop-en-fail.json
+wrong result for credential-issuer-name-extra-prop-en-fail.json
+True
+
+-------------------------------------------
+presentation-no-type-fail.json
+False
+
+-------------------------------------------
+credential-validuntil-ok.json
+True
+
+-------------------------------------------
+credential-redef-type2-fail.json
+False
+context has redundant keys
+-------------------------------------------
+credential-validuntil-tz-ok.json
+True
+
+-------------------------------------------
+presentation-ok.json
+True
+
+-------------------------------------------
+credential-context-combo2-ok.json
+True
+
+-------------------------------------------
+credential-schema-no-id-fail.json
+False
+attribute: id is required for credentialSchema
+-------------------------------------------
+credential-issuer-name-language-direction-en-ok.json
+True
+
+-------------------------------------------
+credential-missing-base-context-fail.json
+False
+missing base context
+-------------------------------------------
+credential-no-issuer-fail.json
+False
+attribute: issuer is required for VerifiableCredential
+-------------------------------------------
+credential-id-other-ok.json
+True
+
+-------------------------------------------
+credential-status-missing-type-fail.json
+False
+attribute: type is required for credentialStatus
+-------------------------------------------
+credential-issuer-multi-language-name-ok.json
+True
+
+-------------------------------------------
+credential-issuer-name-ok.json
+True
+
+-------------------------------------------
+presentation-missing-required-type-fail.json
+False
+type must include VerifiableCredential or VerifiablePresentation
+-------------------------------------------
+credential-type-urls-order-1-ok.json
+True
+
+-------------------------------------------
+credential-validfrom-ms-ok.json
+True
+
+-------------------------------------------
+credential-issuer-name-language-en-ok.json
+True
+
+-------------------------------------------
+credential-status-ok.json
+wrong result for credential-status-ok.json
+False
+Invalid URI: CredentialStatusList2017
+-------------------------------------------
+credential-nonsingle-id-fail.json
+wrong result for credential-nonsingle-id-fail.json
+True
+
+-------------------------------------------
+credential-context-combo1-ok.json
+True
+
+-------------------------------------------
+credential-termsofuse-no-type-fail.json
+False
+attribute: type is required for termsOfUse
+-------------------------------------------
+presentation-no-context-fail.json
+False
+missing @context
+-------------------------------------------
+credential-validUntil-validFrom-fail.json
+False
+FUTURE DATE for validFrom is invalid
+-------------------------------------------
+credential-termsofuses-ok.json
+True
+
+-------------------------------------------
+credential-validuntil-invalid-fail.json
+False
+Sun, 26 Feb 2023 01:22:14 +0000 for validUntil is invalid
+-------------------------------------------
+credential-status-type-nonurl-fail.json
+False
+Invalid URI: 2
+-------------------------------------------
+presentation-derived-vc-ok.json
+wrong result for presentation-derived-vc-ok.json
+False
+eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJ2YyI6eyJAY29udGV4dCI6WyJodHRwczovL3d3dy53My5vcmcvbnMvY3JlZGVudGlhbHMvdjIiLCJodHRwczovL3d3dy53My5vcmcvbnMvY3JlZGVudGlhbHMvZXhhbXBsZXMvdjIiXSwiaWQiOiJodHRwOi8vZXhhbXBsZS5lZHUvY3JlZGVudGlhbHMvMzczMiIsInR5cGUiOlsiVmVyaWZpYWJsZUNyZWRlbnRpYWwiLCJVbml2ZXJzaXR5RGVncmVlQ3JlZGVudGlhbCJdLCJpc3N1ZXIiOiJodHRwczovL2V4YW1wbGUuZWR1L2lzc3VlcnMvNTY1MDQ5IiwidmFsaWRGcm9tIjoiMjAxMC0wMS0wMVQwMDowMDowMFoiLCJjcmVkZW50aWFsU3ViamVjdCI6eyJpZCI6ImRpZDpleGFtcGxlOmViZmViMWY3MTJlYmM2ZjFjMjc2ZTEyZWMyMSIsImRlZ3JlZSI6eyJ0eXBlIjoiQmFjaGVsb3JEZWdyZWUiLCJuYW1lIjoiQmFjaGVsb3Igb2YgU2NpZW5jZSBhbmQgQXJ0cyJ9fX0sImlzcyI6Imh0dHBzOi8vZXhhbXBsZS5lZHUvaXNzdWVycy81NjUwNDkiLCJqdGkiOiJodHRwOi8vZXhhbXBsZS5lZHUvY3JlZGVudGlhbHMvMzczMiIsInN1YiI6ImRpZDpleGFtcGxlOmViZmViMWY3MTJlYmM2ZjFjMjc2ZTEyZWMyMSJ9.0fkQPZOKlD0Sl0A798KBUNMOdGq90McQQIEtKU9tgSd9K1kRcxWVKDXQJcn_FJqLvo2bk793EHk-RTeEL1HyAQ for verifiableCredential is invalid
+-------------------------------------------
+credential-issuer-description-language-direction-en-ok.json
+True
+
+-------------------------------------------
+credential-single-id-ok.json
+True
+
+-------------------------------------------
+credential-issuer-description-extra-prop-en-fail.json
+wrong result for credential-issuer-description-extra-prop-en-fail.json
+True
+
+-------------------------------------------
+credential-context-combo4-fail.json
+False
+123192875 is not a valid value for context
+-------------------------------------------
+credential-validUntil-validFrom-ok.json
+wrong result for credential-validUntil-validFrom-ok.json
+False
+PAST DATE for validFrom is invalid
+-------------------------------------------
+credential-evidence-missing-type-fail.json
+False
+attribute: type is required for evidence
+-------------------------------------------
+credential-refresh-non-url-id-fail.json
+False
+{'type': 'https://example.org/#ExampleTestSuiteRefreshService', 'id': 'https ://not-a-url/8e96ee84-032d-47b2-8d10-86be56032148'} for refreshService is invalid
+-------------------------------------------
+credential-missing-required-type-fail.json
+False
+type must include VerifiableCredential or VerifiablePresentation
+-------------------------------------------
+credential-termsofuse-id-ok.json
+True
+
+-------------------------------------------
+credential-status-multiple-id-fail.json
+False
+Invalid URI: CredentialStatusList2017
+-------------------------------------------
+credential-subject-multiple-ok.json
+True
+
+-------------------------------------------
+credential-no-context-fail.json
+False
+missing @context
+-------------------------------------------
+credential-termsofuse-ok.json
+True
+
+-------------------------------------------
+credential-type-url-ok.json
+True
+
+-------------------------------------------
+credential-id-nonidentifier-fail.json
+wrong result for credential-id-nonidentifier-fail.json
+True
+
+-------------------------------------------
+credential-proof-missing-type-fail.json
+False
+attribute: type is required for proof
+-------------------------------------------
+credential-subject-single-id-ok.json
+True
+
+-------------------------------------------
+credential-issuer-object-ok.json
+True
+
+-------------------------------------------
+credential-issuer-name-optional-ok.json
+True
+
+-------------------------------------------
+credential-schema-no-type-fail.json
+False
+attribute: type is required for credentialSchema
+-------------------------------------------
+presentation-vc-missing-required-type-fail.json
+wrong result for presentation-vc-missing-required-type-fail.json
+True
+
+-------------------------------------------
+credential-subject-no-claims-fail.json
+False
+{} for credentialSubject is invalid
+-------------------------------------------
+credential-issuer-object-id-not-url-fail.json
+False
+{'id': 2} for issuer is invalid
+-------------------------------------------
+credential-type-unmapped-fail.json
+wrong result for credential-type-unmapped-fail.json
+True
+
+-------------------------------------------
+credential-no-subject-fail.json
+False
+attribute: credentialSubject is required for VerifiableCredential
+-------------------------------------------
+credential-issuer-description-ok.json
+True
+
+-------------------------------------------
+credential-validfrom-invalid-fail.json
+False
+Sat 25 Feb 2023 07:16:31 PM CST for validFrom is invalid
+-------------------------------------------
