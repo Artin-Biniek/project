@@ -4,30 +4,7 @@ import os
 import validators
 from dateutil import parser
 
-VERIFIABLE_CREDENTIAL = 'VerifiableCredential'
-VERIFIABLE_PRESENTATION = 'VerifiablePresentation'
-VC_SCHEMA = 'https://www.w3.org/ns/credentials/v2'
-
-with open('op.txt', 'r') as file:
-    json_ld_schema = file.read()
-
-required_attributes = {
-    VERIFIABLE_CREDENTIAL: ["credentialSubject", "issuer"],
-    "JsonSchema": ["id", "type", "jsonSchema"],
-    "BitstringStatusList": ["id", "type", "statusPurpose", "encodedList", "ttl", "statusReference", "statusSize"],
-    "BitstringStatusListEntry": ["id", "type", "statusPurpose", "statusListIndex", "statusListCredential"],
-    "DataIntegrityProof": ["id", "type", "challenge", "created", "domain", "expires", "nonce", "previousProof",
-                           "proofPurpose", "cryptosuite", "proofValue", "verificationMethod"],
-    "cnf": ["kid", "jwk"],
-    "credentialSchema": ["type", "id"],
-    "credentialStatus": ["type"],
-    "evidence": ["type"],
-    "termsOfUse": ["type"],
-    "issuer": ["id"],
-    "proof": ["type"],
-    "refreshService": ["id", "type"]
-}
-
+from utils import VERIFIABLE_CREDENTIAL, VERIFIABLE_PRESENTATION, VC_SCHEMA, JSON_LD_SCHEMA, required_attributes
 from enum import Enum
 
 
@@ -245,7 +222,7 @@ for f_name in files:
         json_ld_data = file.read()
 
         data_dict = json.loads(json_ld_data)
-        schema_dict = json.loads(json_ld_schema)
+        schema_dict = json.loads(JSON_LD_SCHEMA)
         validator = Validator(data_dict, schema_dict)
 
         data_type = validator.get_type()
