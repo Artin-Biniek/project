@@ -1,3 +1,4 @@
+import datetime
 import itertools
 import json
 import random
@@ -15,6 +16,17 @@ class ValidVCGenerator:
 
     def generate_type_string(self):
         return 'BitstringStatusListEntry'
+
+    def generate_basic_type(self, attr_schema):
+        def generate_value(attr_type):
+            if attr_type == '@id':
+                return [self.generate_id_string(), {'id': self.generate_id_string()}]
+            elif attr_type == 'http://www.w3.org/2001/XMLSchema#dateTime':
+                return [datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%SZ')]
+        if isinstance(attr_schema, str):
+            return generate_value(attr_schema)
+        return generate_value(attr_schema['@type'])
+
 
     def generate_attribute(self, attr_name, attr_schema):
         req_attributes_map = {}
@@ -38,23 +50,29 @@ class ValidVCGenerator:
             if attr_name in required_attributes:
                 req_atts = required_attributes[attr_name]
                 if len(req_atts) == 1 and req_atts[0] == 'id':
-                    req_attributes_map['id'] = [self.generate_id_string()]
+                    return [self.generate_id_string()]
                 for ra in req_atts:
                     if ra == 'id':
-                        req_attributes_map['id'] = [self.generate_id_string()]
+                        req_attributes_map['id'] = self.generate_id_string()
                     else:
-                        req_attributes_map[ra] = [self.generate_type_string()]
+                        req_attributes_map[ra] = self.generate_type_string()
+                #for now let's consider if an attr without context has req attributes, it doesnt have arbitrary attributes
+                return [req_attributes_map]
             else:
-                return [self.generate_id_string(), {'id': self.generate_id_string()}]
+                return self.generate_basic_type(attr_schema)
         results = []
         required_combinations = list(itertools.product(*req_attributes_map.values()))
         arbitrary_attrs_choices = {}
         for key, values in arbitrary_atts_map.items():
+            #avoid ignored types causing errors
+            if values is None:
+                arbitrary_attrs_choices[key] = ['unknown']
+                continue
             new_values = [v for v in values]
             new_values.append(None)
             arbitrary_attrs_choices[key] = new_values
         arb_combinations = list(itertools.product(*arbitrary_attrs_choices.values()))
-        combined_keys_unique = list(set(req_attributes_map.keys()).union(set(arbitrary_atts_map.keys())))
+        combined_keys_unique = list(req_attributes_map.keys()) + list(arbitrary_atts_map.keys())
 
         total_combinations = list(itertools.product(required_combinations, arb_combinations))
         flattened_combinations = [list(itertools.chain(*combination)) for combination in total_combinations]
@@ -62,15 +80,16 @@ class ValidVCGenerator:
         for c in flattened_combinations:
             results.append({})
             if attr_name == VERIFIABLE_CREDENTIAL or attr_name == VERIFIABLE_PRESENTATION:
-                results[-1]['type']['@context'] = VC_SCHEMA
-                if attr_name == VERIFIABLE_CREDENTIAL:
-                    results[-1]['type'] = VERIFIABLE_CREDENTIAL
-                else:
-                    results[-1]['type'] = VERIFIABLE_PRESENTATION
+                results[-1]['@context'] = VC_SCHEMA
+
             for i in range(len(c)):
                 if c[i] is None:
                     continue
                 results[-1][combined_keys_unique[i]] = c[i]
+            if attr_name == VERIFIABLE_CREDENTIAL:
+                results[-1]['type'] = VERIFIABLE_CREDENTIAL
+            else:
+                results[-1]['type'] = VERIFIABLE_PRESENTATION
 
 
 
