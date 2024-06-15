@@ -80,7 +80,7 @@ class ValidVCGenerator:
         for c in flattened_combinations:
             results.append({})
             if attr_name == VERIFIABLE_CREDENTIAL or attr_name == VERIFIABLE_PRESENTATION:
-                results[-1]['@context'] = VC_SCHEMA
+                results[-1]['@context'] = [VC_SCHEMA]
 
             for i in range(len(c)):
                 if c[i] is None:

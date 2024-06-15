@@ -117,6 +117,8 @@ class Validator:
             return isinstance(value, int) and int(value) < 0
         elif type == 'http://www.w3.org/2001/XMLSchema#dateTime':
             return self.is_valid_date(value)
+        elif value == 'unknown':
+            return True
         else:
             for key, new_value in value.items():
                 if isinstance(new_value, list):
@@ -208,13 +210,13 @@ class Validator:
             return False
         new_data = {}
         for key, value in self.data.items():
-            if key == '@context' or key == 'type':
+            if key == '@context' or key == 'type' or key == 'id':
                 continue
             new_data[key] = value
         return self.validate_value(self.type, new_data, self.schema['@context'])
 
 
-dir = './tests/input/'
+dir = './generated_vcs/'
 files = os.listdir(dir)
 for f_name in files:
     with open(dir + f_name) as file:
@@ -226,18 +228,18 @@ for f_name in files:
         validator = Validator(data_dict, schema_dict)
 
         data_type = validator.get_type()
-        try:
-            is_data_valid = validator.validate()
-            if 'ok' in f_name:
-                if not is_data_valid:
-                    print(f'wrong result for {f_name}')
-            elif 'fail' in f_name:
-                if is_data_valid:
-                    print(f'wrong result for {f_name}')
+        # try:
+        is_data_valid = validator.validate()
+        if 'ok' in f_name:
+            if not is_data_valid:
+                print(f'wrong result for {f_name}')
+        elif 'fail' in f_name:
+            if is_data_valid:
+                print(f'wrong result for {f_name}')
 
-            print(is_data_valid)
-            print(validator.error)
-            print('-------------------------------------------')
-        except Exception as e:
-            print(f'validation failed for file {f_name}')
-            print(e)
+        print(is_data_valid)
+        print(validator.error)
+        print('-------------------------------------------')
+        # except Exception as e:
+        #     print(f'validation failed for file {f_name}')
+        #     print(e)
