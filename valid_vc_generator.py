@@ -1,6 +1,7 @@
 import datetime
 import itertools
 import json
+import os
 import random
 
 from utils import VERIFIABLE_CREDENTIAL, required_attributes, JSON_LD_SCHEMA, VERIFIABLE_PRESENTATION, VC_SCHEMA
@@ -104,5 +105,12 @@ results = generator.generate_attribute(VERIFIABLE_CREDENTIAL, json_ld_schema['@c
 
 random_items = random.sample(results, 50)
 
-for i in random_items:
-    print(i)
+folder = './generated_vcs/'
+
+if not os.path.exists(folder):
+    os.makedirs(folder)
+
+for i in range(len(random_items)):
+    with open(folder + str(i) + '.json', 'w') as file:
+        file.write(json.dumps(random_items[i]))
+
