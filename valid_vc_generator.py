@@ -15,7 +15,7 @@ class ValidVCGenerator:
         return 'http://1edtech.edu/credentials/3732'
 
     def generate_type_string(self):
-        return 'BitstringStatusListEntry'
+        return 'random-string'
 
     def generate_basic_type(self, attr_schema):
         def generate_value(attr_type):
