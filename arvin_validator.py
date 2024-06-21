@@ -4,19 +4,8 @@ import os
 import validators
 from dateutil import parser
 
-from utils import VERIFIABLE_CREDENTIAL, VERIFIABLE_PRESENTATION, VC_SCHEMA, JSON_LD_SCHEMA, required_attributes
-from enum import Enum
-
-
-class Restriction(Enum):
-    MustBeUrl = 1
-
-
-special_reqs = {
-    "credentialStatus": {
-        "type": [Restriction.MustBeUrl]
-    }
-}
+from utils import VERIFIABLE_CREDENTIAL, VERIFIABLE_PRESENTATION, VC_SCHEMA, JSON_LD_SCHEMA, required_attributes, \
+    Restriction, special_reqs
 
 
 class Validator:
@@ -228,18 +217,18 @@ for f_name in files:
         validator = Validator(data_dict, schema_dict)
 
         data_type = validator.get_type()
-        # try:
-        is_data_valid = validator.validate()
-        if 'ok' in f_name:
-            if not is_data_valid:
-                print(f'wrong result for {f_name}')
-        elif 'fail' in f_name:
-            if is_data_valid:
-                print(f'wrong result for {f_name}')
+        try:
+            is_data_valid = validator.validate()
+            if 'ok' in f_name:
+                if not is_data_valid:
+                    print(f'wrong result for {f_name}')
+            elif 'fail' in f_name:
+                if is_data_valid:
+                    print(f'wrong result for {f_name}')
 
-        print(is_data_valid)
-        print(validator.error)
-        print('-------------------------------------------')
-        # except Exception as e:
-        #     print(f'validation failed for file {f_name}')
-        #     print(e)
+            print(is_data_valid)
+            print(validator.error)
+            print('-------------------------------------------')
+        except Exception as e:
+            print(f'validation failed for file {f_name}')
+            print(e)

@@ -4,7 +4,8 @@ import json
 import os
 import random
 
-from utils import VERIFIABLE_CREDENTIAL, required_attributes, JSON_LD_SCHEMA, VERIFIABLE_PRESENTATION, VC_SCHEMA
+from utils import VERIFIABLE_CREDENTIAL, required_attributes, JSON_LD_SCHEMA, VERIFIABLE_PRESENTATION, VC_SCHEMA, \
+    BIT_STRING_STATUS_URL
 
 
 class ValidVCGenerator:
@@ -28,7 +29,7 @@ class ValidVCGenerator:
             return generate_value(attr_schema)
         return generate_value(attr_schema['@type'])
 
-    def generate_attribute(self, attr_name, attr_schema):
+    def generate_attribute(self, parent_attr_name, attr_name, attr_schema):
         req_attributes_map = {}
         arbitrary_atts_map = {}
 
@@ -36,7 +37,7 @@ class ValidVCGenerator:
             if attr_name in required_attributes:
                 req_atts = required_attributes[attr_name]
                 for ra in req_atts:
-                    req_attributes_map[ra] = self.generate_attribute(ra, attr_schema['@context'][ra])
+                    req_attributes_map[ra] = self.generate_attribute(attr_name, ra, attr_schema['@context'][ra])
 
             for key, value in attr_schema['@context'].items():
                 if key in self.ignored_attrs:
@@ -44,8 +45,10 @@ class ValidVCGenerator:
                 if attr_name in required_attributes:
                     if key in required_attributes[attr_name]:
                         continue
-                arbitrary_atts_map[key] = self.generate_attribute(key, attr_schema['@context'][key])
+                arbitrary_atts_map[key] = self.generate_attribute(attr_name, key, attr_schema['@context'][key])
         else:
+            if attr_name == 'credentialStatus':
+                return [{'type': BIT_STRING_STATUS_URL}]
             if attr_name in required_attributes:
                 req_atts = required_attributes[attr_name]
                 if len(req_atts) == 1 and req_atts[0] == 'id':
@@ -57,8 +60,8 @@ class ValidVCGenerator:
                         req_attributes_map[ra] = self.generate_type_string()
                 # for now, we consider if an attr without context has req attributes, it doesnt have arbitrary attributes
                 return [req_attributes_map]
-            else:
-                return self.generate_basic_type(attr_schema)
+
+            return self.generate_basic_type(attr_schema)
         results = []
         required_combinations = list(itertools.product(*req_attributes_map.values()))
         arbitrary_attrs_choices = {}
@@ -98,7 +101,7 @@ generator = ValidVCGenerator()
 
 json_ld_schema = json.loads(JSON_LD_SCHEMA)
 
-results = generator.generate_attribute(VERIFIABLE_CREDENTIAL, json_ld_schema['@context'][VERIFIABLE_CREDENTIAL])
+results = generator.generate_attribute("", VERIFIABLE_CREDENTIAL, json_ld_schema['@context'][VERIFIABLE_CREDENTIAL])
 
 random_items = random.sample(results, 50)
 
