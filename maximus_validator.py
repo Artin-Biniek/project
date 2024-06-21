@@ -4,57 +4,22 @@ import os
 import validators
 from dateutil import parser
 
-from utils import VERIFIABLE_CREDENTIAL, VERIFIABLE_PRESENTATION, VC_SCHEMA, JSON_LD_SCHEMA, required_attributes, \
-    Restriction, special_reqs
+from utils import VERIFIABLE_CREDENTIAL, VERIFIABLE_PRESENTATION, VC_SCHEMA_1, VC_SCHEMA_2, DATE_TIME_TYPE1, \
+    DATE_TIME_TYPE2, required_attributes, Restriction, special_reqs
 
-
-VERIFIABLE_CREDENTIAL = 'VerifiableCredential'
-VERIFIABLE_PRESENTATION = 'VerifiablePresentation'
-VC_SCHEMA = ''
-
-text=input("Enter a)V2.0 or b)V1.1: ")
-if text=="a":
-    with open('op.txt', 'r') as file:
+text = input("Enter a)V2.0 or b)V1.1: ")
+if text == "a":
+    with open('v2.txt', 'r') as file:
         json_ld_schema = file.read()
-    VC_SCHEMA = 'https://www.w3.org/ns/credentials/v2'
+    VC_SCHEMA = VC_SCHEMA_2
     dir = './tests/input/'
-    datetime_type='http://www.w3.org/2001/XMLSchema#dateTime'
-if text=="b":
+    datetime_type = DATE_TIME_TYPE2
+if text == "b":
     with open('v1.txt', 'r') as file:
         json_ld_schema = file.read()
-    VC_SCHEMA = 'https://www.w3.org/2018/credentials/v1'
-    datetime_type='xsd:dateTime'
+    VC_SCHEMA = VC_SCHEMA_1
+    datetime_type = DATE_TIME_TYPE1
     dir = './vc-data-model-1.0/input/'
-
-required_attributes = {
-    VERIFIABLE_CREDENTIAL: ["credentialSubject", "issuer"],
-    "JsonSchema": ["id", "type", "jsonSchema"],
-    "BitstringStatusList": ["id", "type", "statusPurpose", "encodedList", "ttl", "statusReference", "statusSize"],
-    "BitstringStatusListEntry": ["id", "type", "statusPurpose", "statusListIndex", "statusListCredential"],
-    "DataIntegrityProof": ["id", "type", "challenge", "created", "domain", "expires", "nonce", "previousProof",
-                           "proofPurpose", "cryptosuite", "proofValue", "verificationMethod"],
-    "cnf": ["kid", "jwk"],
-    "credentialSchema": ["type", "id"],
-    "credentialStatus": ["type"],
-    "evidence": ["type"],
-    "termsOfUse": ["type"],
-    "issuer": ["id"],
-    "proof": ["type"],
-    "refreshService": ["id", "type"]
-}
-
-from enum import Enum
-
-
-class Restriction(Enum):
-    MustBeUrl = 1
-
-
-special_reqs = {
-    "credentialStatus": {
-        "type": [Restriction.MustBeUrl]
-    }
-}
 
 
 class Validator:
@@ -262,7 +227,7 @@ for f_name in files:
         json_ld_data = file.read()
 
         data_dict = json.loads(json_ld_data)
-        schema_dict = json.loads(JSON_LD_SCHEMA)
+        schema_dict = json.loads(json_ld_schema)
         validator = Validator(data_dict, schema_dict)
 
         data_type = validator.get_type()

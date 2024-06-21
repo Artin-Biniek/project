@@ -4,8 +4,8 @@ import json
 import os
 import random
 
-from utils import VERIFIABLE_CREDENTIAL, required_attributes, JSON_LD_SCHEMA, VERIFIABLE_PRESENTATION, VC_SCHEMA, \
-    BIT_STRING_STATUS_URL
+from utils import VERIFIABLE_CREDENTIAL, required_attributes, VERIFIABLE_PRESENTATION, BIT_STRING_STATUS_URL, \
+    get_json_schema, VC_SCHEMA_2
 
 
 class ValidVCGenerator:
@@ -83,7 +83,7 @@ class ValidVCGenerator:
         for c in flattened_combinations:
             results.append({})
             if attr_name == VERIFIABLE_CREDENTIAL or attr_name == VERIFIABLE_PRESENTATION:
-                results[-1]['@context'] = [VC_SCHEMA]
+                results[-1]['@context'] = [VC_SCHEMA_2]
 
             for i in range(len(c)):
                 if c[i] is None:
@@ -99,7 +99,7 @@ class ValidVCGenerator:
 
 generator = ValidVCGenerator()
 
-json_ld_schema = json.loads(JSON_LD_SCHEMA)
+json_ld_schema = get_json_schema(2)
 
 results = generator.generate_attribute("", VERIFIABLE_CREDENTIAL, json_ld_schema['@context'][VERIFIABLE_CREDENTIAL])
 
