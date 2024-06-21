@@ -4,6 +4,10 @@ import os
 import validators
 from dateutil import parser
 
+from utils import VERIFIABLE_CREDENTIAL, VERIFIABLE_PRESENTATION, VC_SCHEMA, JSON_LD_SCHEMA, required_attributes, \
+    Restriction, special_reqs
+
+
 VERIFIABLE_CREDENTIAL = 'VerifiableCredential'
 VERIFIABLE_PRESENTATION = 'VerifiablePresentation'
 VC_SCHEMA = ''
@@ -151,6 +155,8 @@ class Validator:
             return isinstance(value, int) and int(value) < 0
         elif type == datetime_type:
             return self.is_valid_date(value)
+        elif value == 'unknown':
+            return True
         else:
             for key, new_value in value.items():
                 if isinstance(new_value, list):
@@ -248,7 +254,7 @@ class Validator:
         return self.validate_value(self.type, new_data, self.schema['@context'])
 
 
-#dir = './tests/input/'
+dir = './generated_vcs/'
 files = os.listdir(dir)
 for f_name in files:
     with open(dir + f_name) as file:
@@ -256,7 +262,7 @@ for f_name in files:
         json_ld_data = file.read()
 
         data_dict = json.loads(json_ld_data)
-        schema_dict = json.loads(json_ld_schema)
+        schema_dict = json.loads(JSON_LD_SCHEMA)
         validator = Validator(data_dict, schema_dict)
 
         data_type = validator.get_type()
