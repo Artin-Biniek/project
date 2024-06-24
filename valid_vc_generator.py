@@ -11,6 +11,7 @@ from utils import VERIFIABLE_CREDENTIAL, required_attributes, VERIFIABLE_PRESENT
 class ValidVCGenerator:
     def __init__(self):
         self.ignored_attrs = ['@protected', '@id', '@type']
+        self.level = 0
 
     def generate_id_string(self):
         return 'http://1edtech.edu/credentials/3732'
@@ -32,10 +33,14 @@ class ValidVCGenerator:
     def generate_attribute(self, parent_attr_name, attr_name, attr_schema):
         req_attributes_map = {}
         arbitrary_atts_map = {}
-
+        logger = GeneratorLogger(attr_name, self.level)
+        logger.log_generation_start()
+        level_increased = False
         if '@context' in attr_schema:
             if attr_name in required_attributes:
                 req_atts = required_attributes[attr_name]
+                self.level += 1
+                level_increased = True
                 for ra in req_atts:
                     req_attributes_map[ra] = self.generate_attribute(attr_name, ra, attr_schema['@context'][ra])
 
@@ -45,23 +50,34 @@ class ValidVCGenerator:
                 if attr_name in required_attributes:
                     if key in required_attributes[attr_name]:
                         continue
+                if not level_increased:
+                    level_increased = True
+                    self.level += 1
                 arbitrary_atts_map[key] = self.generate_attribute(attr_name, key, attr_schema['@context'][key])
         else:
             if attr_name == 'credentialStatus':
-                return [{'type': BIT_STRING_STATUS_URL}]
+                value = [{'type': BIT_STRING_STATUS_URL}]
+                logger.log_value_generation(value)
+                return value
             if attr_name in required_attributes:
                 req_atts = required_attributes[attr_name]
                 if len(req_atts) == 1 and req_atts[0] == 'id':
-                    return [self.generate_id_string()]
+                    value = [self.generate_id_string()]
+                    logger.log_value_generation(value)
+                    return value
                 for ra in req_atts:
                     if ra == 'id':
-                        req_attributes_map['id'] = self.generate_id_string()
+                        req_attributes_map[ra] = self.generate_id_string()
                     else:
                         req_attributes_map[ra] = self.generate_type_string()
+                    logger.log_child_value_generation(ra, req_attributes_map[ra])
                 # for now, we consider if an attr without context has req attributes, it doesnt have arbitrary attributes
-                return [req_attributes_map]
-
-            return self.generate_basic_type(attr_schema)
+                value = [req_attributes_map]
+                logger.log_value_generation(value)
+                return value
+            value = self.generate_basic_type(attr_schema)
+            logger.log_value_generation(value)
+            return value
         results = []
         required_combinations = list(itertools.product(*req_attributes_map.values()))
         arbitrary_attrs_choices = {}
@@ -95,6 +111,25 @@ class ValidVCGenerator:
                 results[-1]['type'] = VERIFIABLE_PRESENTATION
 
         return results
+
+
+class GeneratorLogger:
+    def __init__(self, attr_name, level):
+        self.level = level
+        self.attr_name = attr_name
+
+    def log_generation_start(self):
+        indentation = ' ' * self.level
+        print(f'{indentation}•generating attribute {self.attr_name}')
+
+    def log_value_generation(self, value):
+        indentation = ' ' * (self.level + 1)
+        print(f'{indentation}◦{value} assigned to {self.attr_name}')
+
+    def log_child_value_generation(self, attr_name, value):
+        indentation = ' ' * (self.level + 1)
+        print(f'{indentation}•generating attribute {attr_name}')
+        print(f'{indentation + " "}◦{value} assigned to {attr_name}')
 
 
 generator = ValidVCGenerator()
