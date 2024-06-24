@@ -1,11 +1,14 @@
 import json
 import os
+import logging
 
 import validators
 from dateutil import parser
 
 from utils import VERIFIABLE_CREDENTIAL, VERIFIABLE_PRESENTATION, VC_SCHEMA_1, VC_SCHEMA_2, DATE_TIME_TYPE1, \
     DATE_TIME_TYPE2, required_attributes, Restriction, special_reqs
+
+logging.basicConfig(level=logging.INFO)
 
 text = input("Enter a)V2.0 or b)V1.1: ")
 if text == "a":
@@ -40,10 +43,12 @@ class Validator:
     def is_uri_validators(self, uri):
         if not isinstance(uri, str):
             self.error = f'Invalid URI: {uri}'
+            logging.error(self.error)
             return False
         is_valid = validators.url(uri) or validators.email(uri) or validators.domain(uri) or uri.startswith("did:")
         if not is_valid:
             self.error = f'Invalid URI: {uri}'
+            logging.error(self.error)
         return is_valid
 
     def check_id_type(self, value):
@@ -63,9 +68,11 @@ class Validator:
             return True
         except ValueError:
             self.error = f'invalid date: {date_string}'
+            logging.error(self.error)
             return False
 
     def check_req_attributes(self, key, value, type):
+        logging.info(f'Checking required attributes for {key}.')
         if key not in required_attributes:
             return True
         if type == '@id' and isinstance(value, str):
@@ -82,6 +89,7 @@ class Validator:
             for req_att in required_attributes[key]:
                 if req_att not in value:
                     self.error = f'attribute: {req_att} is required for {key}'
+                    logging.info(f'attribute: {req_att} is required for {key}')
                     return False
         return True
 
@@ -108,10 +116,12 @@ class Validator:
                 res_val = value[res_att]
                 for restriction in restrictions:
                     if not self.check_restriction(restriction, res_val):
+                        logging.error(f'Restriction {str(restriction)} is not satisfied for {key}')
                         return False
         return True
 
     def validate_value(self, type, value, schema):
+        logging.info(f'validating value of {value} for {type}')
         if isinstance(value, dict) and len(value.keys()) == 0 and type != VERIFIABLE_PRESENTATION:
             return False
         if type == '@id':
@@ -148,24 +158,29 @@ class Validator:
         is_valid = self.validate_value(new_type, value, new_schema)
         if not is_valid:
             self.error = f'{value} for {key} is invalid'
+            logging.error(f'{value} for {key} is invalid')
             return False
         return True
 
     def validate_context(self):
         if '@context' not in self.data:
             self.error = f'missing @context'
+            logging.error(self.error)
             return False
         if not isinstance(self.data['@context'], list):
             self.error = f'@context must be a list'
+            logging.error(self.error)
             return False
         keys_list = []
         if self.data['@context'][0] != VC_SCHEMA:
             self.error = 'missing base context'
+            logging.error(self.error)
             return False
         for e in self.data['@context']:
 
             if not isinstance(e, (str, dict)):
                 self.error = f'{e} is not a valid value for context'
+                logging.error(f'{e} is not a valid value for context')
                 return False
             if isinstance(e, str):
                 if not self.is_uri_validators(e):
@@ -174,6 +189,7 @@ class Validator:
                 keys_list += list(e.keys())
                 if VERIFIABLE_CREDENTIAL in keys_list or VERIFIABLE_PRESENTATION in keys_list:
                     self.error = "reserved keywords can't be used in context"
+                    logging.error(self.error)
                     return False
                 for key, value in e.items():
                     if isinstance(value, str):
@@ -182,14 +198,17 @@ class Validator:
                     elif isinstance(value, dict):
                         if '@type' not in value:
                             self.error = f'missing @type at {key}'
+                            logging.error(self.error)
                             return False
         keys_set = set(keys_list)
         if len(keys_set) != len(keys_list):
             self.error = 'context has redundant keys'
+            logging.error(self.error)
             return False
         return True
 
     def validate(self):
+        logging.info("validating context")
         is_context_valid = self.validate_context()
         if not is_context_valid:
             return False
@@ -208,6 +227,7 @@ class Validator:
             self.type = VERIFIABLE_PRESENTATION
         else:
             self.error = f'type must include {VERIFIABLE_CREDENTIAL} or {VERIFIABLE_PRESENTATION}'
+            logging.error(self.error)
             return False
         if not self.check_req_attributes(self.type, self.data, self.type):
             return False
