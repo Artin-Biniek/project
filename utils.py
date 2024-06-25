@@ -32,7 +32,6 @@ required_attributes = {
     "credentialStatus": ["type"],
     "evidence": ["type"],
     "termsOfUse": ["type"],
-    "issuer": ["id"],
     "proof": ["type"],
     "refreshService": ["id", "type"]
 }
